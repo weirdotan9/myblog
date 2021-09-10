@@ -1,0 +1,35 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://120.46.145.9:3306/myblog?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 1234
+  thymeleaf:
+    cache: false
+    mode: html
+
+  #启用hiddenmethod过滤器将POST请求转换为其他请求 PUT DELETE
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.twr.entity
+
+logging:
+  level:
+    root: warn
+    com.twr: info
+  file:
+    name: log/myblog/myblog-dev.log
+    path: log/mylog
+    max-size: 10MB
+    max-history: 7
+comment.avatar: /images/avatar.png

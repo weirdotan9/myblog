@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TWei-关于我</title>
+    <link href="../static/images/me.jpg" th:href="@{/images/myAvatar.jpg}" rel="icon" type="image/x-ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+<!--导航-->
+<div th:replace="~{common/head::navBar(n=8)}"></div>
+
+
+<!--顶部背景图片-->
+<div class="m-bg-type_outer" style="width: 100%;height: 40%">
+    <img src="../static/images/aboutbg.jpg" th:src="@{/images/aboutbg.jpg}" alt="" class="ui m-bg image" style="width: 100%;height: 100%">
+    <div class="m-bg-class_cover">
+        <div class="ui container" style="position: relative ;bottom: -540px;">
+            <div class="m-font-size-title" align="center" style="font-family:'STXingkai'">关于我</div>
+            <div class="m-font-size-text-init-title m-margin-top" align="center">头一次面对生活，记得善待自己</div>
+        </div>
+    </div>
+</div>
+
+<!--个人资料描述-->
+<div class="ui container m-opacity box-shadow-max">
+    <div class="ui segment m-margin-" align="center">
+        <div class="m-margin-top-large" align="center">
+            <img class="ui circular image" align="center" src="../static/images/me.jpg" th:src="@{/images/myAvatar.jpg}" style="width: 150px;height: 150px;">
+        </div>
+    <div class="m-margin-top-small" style="font-size: x-large;font-family: STSong" align="center">Wei</div>
+
+    <div class="m-margin-top" align="center">
+        <a href="#" class="ui tencent circular icon button" data-content="Hi,Wei" data-position="bottom center"><i class="user icon"></i></a>
+        <a href="#" class="ui wechat circular icon button"><i class="weixin icon"></i></a>
+        <a href="#" class="ui qq circular icon button" data-content="203416162" data-position="bottom center"><i class="qq icon"></i></a>
+        <a href="https://github.com/weirdotan9/" target="_blank" class="ui github circular icon button" data-content="点击跳转GitHub" data-position="bottom center"><i class="github icon"></i></a>
+        <a href="https://gitee.com/weirdotan9" target="_blank" class="ui gitee circular icon button" data-content="点击跳转Gitee" data-position="bottom center"><i class="git square  outline icon"></i></a>
+        <a href="#" class="ui email circular icon button" data-content="weirdotan9@163.com" data-position="bottom center"><i class="envelope  icon"></i></a>
+    </div>
+
+
+    <div class="ui wechat-qr flowing popup transition hidden">
+        <img src="../static/images/Wechat.jpg" th:src="@{/images/Wechat.jpg}" alt="" class="ui rounded image" style="width: 110px">
+        <div align="center">微信</div>
+    </div>
+    <div class="ui qq-qr flowing popup transition hidden">
+        <img src="../static/images/qq.jpg" th:src="@{/images/qq.jpg}" alt="" class="ui rounded image" style="width: 110px">
+        <div align="center">QQ</div>
+    </div>
+        <hr class="m-margin-top-small" style="width: 30%">
+        <br>
+        <div>
+            <p>“东边日出西边雨，</p>
+            <p>道是无晴却有晴。”</p>
+            <p>真正的快乐是对生活的乐观，对工作的愉快，对事业的兴奋</p>
+            <br>
+            <p>90后的尾巴</p>
+            <p>爱编程、爱吃、爱折腾</p>
+            <p>生命在于折腾</p>
+            <p>世界很大</p>
+            <p>有些鸟儿注定是不会被关在笼子里的</p>
+            <p>因为它们的每一片羽毛都闪耀着自由的光辉</p>
+            <p>既然来到了人间</p>
+            <p>便去经历，去拼搏，去感受，去爱</p>
+            <p>生命不息，折腾不止</p>
+            <p>总有些人，有些事，会让你感觉到生命的温暖和满足，让你感慨生命的“不虚此行”</p>
+            <p>届时，我会说</p>
+            <p>我来过，我不后悔！</p>
+        </div>
+        <hr class="m-margin-top-large">
+        <br>
+        <h2 class="m-margin-tb-tiny" style="font-size: xx-large;font-weight: bold;color: #F08047;font-family: STSong">感谢来访</h2>
+            <div class="ui orange basic label m-margin-tb-tiny">
+            <p style="font-size: medium">每一次提笔的我们，就像街边的街头艺人，用笔唱着自己的歌谣。如果有一天你感动了，那么期待您来一杯咖啡</p>
+            </div>
+
+    </div>
+</div>
+
+  <br>
+  <br>
+
+  <!--底部栏-->
+<div th:replace="~{common/foot::footBar}"></div>
+
+
+
+<th:block th:replace="~{common/script::scriptBar}"></th:block>
+  <script>
+      // $('#newblog-container').load(/*[[@{/footer/newblog}]]*/"/footer/newblog");
+
+      $('#nav').css("display","block");
+
+
+    // 显示公众号
+    $('.tencent').popup();
+
+    // 显示微信
+    $('.wechat').popup({
+        popup : $('.wechat-qr'),
+        position: 'bottom center'
+    });
+
+    // 显示QQ
+    $('.qq').popup({
+        popup : $('.qq-qr'),
+        position: 'bottom center'
+    });
+
+    // 显示邮箱
+    $('.email').popup();
+
+    // 显示Gitee
+    $('.gitee').popup();
+
+      // 显示github
+      $('.github').popup();
+
+
+  </script>
+</body>
+</html>

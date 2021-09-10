@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>分类管理</title>
+  <link href="../../static/images/me.jpg" th:href="@{/images/myAvatar.jpg}" rel="icon" type="image/x-ico">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+<!--导航栏-->
+    <div th:replace="~{admin/common/header::headerBar(mainActive='type')}"></div>
+
+
+<div th:replace="~{admin/common/header::typeBar(activeUrl='typeList')}"></div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+  <!--中间内容-->
+  <div  class="m-padded-tb-big">
+    <div class="ui container">
+      <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+        <i class="close icon"></i>
+        <div class="" th:text="|提示： ${message}">提示：操作成功！</div>
+      </div>
+      <table class="ui compact teal table">
+        <thead>
+          <tr align="center">
+            <th>ID</th>
+            <th>名称</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr align="center" th:each="type,iterStat: ${pageInfo.list}">
+            <td th:text="${iterStat.count}">1</td>
+            <td th:text="${type.name}">我的故事</td>
+            <td>
+              <a href="#" class="ui mini teal basic button" th:href="@{/admin/types/{id}/input(id=${type.id})}">编辑</a>
+              <button href="#" th:attr="del_uri=@{/admin/types/}+${type.id}" onclick="return confirm('确定要删除该分类吗？三思啊! 删了可就没了！')" class="ui mini red basic button delTypeBtn">删除</button>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="6" >
+              <div class="ui inverted divided stackable grid">
+                <div class="three wide column" align="center">
+                  <a class="item" th:href="@{/admin/types(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}" th:unless="${pageInfo.isFirstPage}">上一页</a>
+                </div>
+
+                <div class="ten wide column" align="center">
+                  <p>第 <span th:text="${pageInfo.pageNum}"></span> 页，共 <span th:text="${pageInfo.pages}"></span> 页，有 <span th:text="${pageInfo.total}"></span> 个分类</p>
+                </div>
+
+                <div class="three wide column" align="center">
+                  <a class="item" th:href="@{/admin/types(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}" th:unless="${pageInfo.isLastPage}" >下一页</a>
+                </div>
+              </div>
+              <div align="center">
+              <a href="#" th:href="@{/admin/types/input}">
+                <button type="button" class="ui teal button m-mobile-wide m-margin-top"><i class="pencil icon"></i>新增</button>
+              </a>
+              </div>
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+      <form id="deleteTypeForm"  method="post" >
+        <input type="hidden" name="_method" value="delete" />
+      </form>
+    </div>
+  </div>
+
+  <br>
+  <br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+  <!--底部栏-->
+
+<div th:replace="~{common/foot::footBar}"></div>
+
+<!--引入script-->
+<th:block th:replace="~{admin/common/scriptFragment::scriptBar}">
+</th:block>
+<script>
+    $(".delTypeBtn").click(function(){
+        $("#deleteTypeForm").attr("action",$(this).attr("del_uri")).submit();
+        return false;
+    });
+</script>
+
+</body>
+</html>

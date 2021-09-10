@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.twr.dao.TypeDao">
+
+    <resultMap id="typeMap" type="type">
+        <id column="tid" property="id"/>
+        <result column="name" property="name"/>
+        <collection property="blogs" ofType="com.twr.entity.Blog">
+            <id column="bid" property="id"/>
+            <result column="title" property="title"/>
+            <result column="type_id" property="typeId"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="getAllTypeAndBlogs" resultMap="typeMap">
+        select t.id tid,t.name,b.id bid,b.type_id,b.title
+        from t_blog b ,t_type t
+        where t.id= b.type_id
+    </select>
+
+    <!--新增保存分类-->
+    <insert id="addType" parameterType="com.twr.entity.Type">
+        insert into t_type values (#{id},#{name});
+    </insert>
+
+    <!--根据id，name查询分类-->
+    <select id="getTypeById" resultType="com.twr.entity.Type">
+        select id,name from t_type where id = #{id}
+    </select>
+
+    <!--根据分类名称来查询-->
+    <select id="getTypeByName" resultType="com.twr.entity.Type">
+        select * from t_type where name = #{name}
+    </select>
+
+    <!--查询所有分类-->
+    <select id="getTypes" resultType="com.twr.entity.Type">
+        select * from t_type
+    </select>
+
+    <!--编辑修改分类-->
+    <update id="updateType" parameterType="com.twr.entity.Type">
+        update t_type set name = #{name} where id = #{id};
+    </update>
+
+    <!--删除分类-->
+    <delete id="removeType" >
+        delete from t_type where id = #{id}
+    </delete>
+
+
+
+</mapper>

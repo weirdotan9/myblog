@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.twr.dao.ResourceDao">
+
+    <resultMap id="resourceMap" type="com.twr.entity.Resource">
+        <id property="id" column="id"/>
+        <result property="resourceName" column="resource_name"/>
+        <result property="resourceAddress" column="resource_address"/>
+        <result property="resourcePicture" column="resource_picture"/>
+        <result property="resourceDescription" column="resource_description"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="type" column="type"/>
+        <result property="categoryId" column="category_id"/>
+        <association property="category" javaType="com.twr.entity.Category">
+            <id property="id" column="id"/>
+            <result property="name" column="name"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="resourceShowMap" type="com.twr.queryvo.ResourceShowVO">
+        <id property="id" column="id"/>
+        <result property="resourceName" column="resource_name"/>
+        <result property="resourceAddress" column="resource_address"/>
+        <result property="resourcePicture" column="resource_picture"/>
+        <result property="resourceDescription" column="resource_description"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+
+    <select id="getAllResources" resultMap="resourceMap">
+        select r.id,
+               r.resource_name,
+               r.resource_address,
+               r.resource_picture,
+               r.resource_description,
+               r.update_time,
+               r.type,
+               r.category_id,
+               c.id,
+               c.name
+        from t_resource r
+                 left join t_category c on r.category_id = c.id
+        order by r.update_time desc
+    </select>
+
+    <select id="getResourcesByCategoryId" resultMap="resourceMap">
+        select r.id,
+               r.resource_name,
+               r.resource_address,
+               r.resource_picture,
+               r.resource_description,
+               r.update_time,
+               r.type,
+               r.category_id,
+               c.id,
+               c.name
+        from t_resource r
+                 left join t_category c on r.category_id = c.id
+        where r.category_Id = #{id}
+        order by r.update_time desc
+
+    </select>
+
+    <select id="getOneById" resultMap="resourceMap">
+        select r.id,
+               r.resource_name,
+               r.resource_address,
+               r.resource_picture,
+               r.resource_description,
+               r.update_time,
+               r.type,
+               r.category_id,
+               c.id,
+               c.name
+        from t_resource r
+                 left join t_category c on r.category_id = c.id
+        where r.id = #{id}
+    </select>
+
+
+    <insert id="addResource" parameterType="resource">
+        insert into t_resource (id, resource_name, resource_address, resource_picture, resource_description,
+                                update_time, type, category_id)
+        values (#{id}, #{resourceName}, #{resourceAddress}, #{resourcePicture}, #{resourceDescription}, #{updateTime},
+                #{type}, #{categoryId})
+    </insert>
+
+    <delete id="removeResource">
+        delete
+        from t_resource
+        where id = #{id}
+    </delete>
+
+    <update id="updateResource" parameterType="resource">
+        update t_resource
+        set resource_name=#{resourceName},
+            resource_address=#{resourceAddress},
+            resource_picture=#{resourcePicture},
+            resource_description=#{resourceDescription},
+            update_time=#{updateTime},
+            type=#{type},
+            category_id=#{categoryId}
+        where id = #{id}
+    </update>
+
+
+</mapper>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资源管理</title>
+    <link href="../../static/images/me.jpg" th:href="@{/images/myAvatar.jpg}" rel="icon" type="image/x-ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+<!--导航栏-->
+<div th:replace="~{admin/common/header::headerBar(mainActive='resource')}"></div>
+
+<div th:replace="~{admin/common/header::resourceBar(activeUrl='resourceList')}"></div>
+
+<!--中间内容-->
+<br>
+<br>
+<br>
+
+<!--中间内容-->
+<div class="">
+    <div class="ui container">
+        <div class="ui secondary segment form">
+            <input type="hidden" name="page">
+            <div class="inline fields">
+                <div class="field">
+                    <div class="ui labeled action input">
+                        <div class="ui type selection dropdown">
+                            <input type="hidden" name="categoryId">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">分类</div>
+                            <div class="menu">
+                                <div class="item" th:each="category:${categories}" th:data-value="${category.id}" th:text="${category.name}">我的故事
+                                </div>
+                            </div>
+                        </div>
+                        <button id="clear-btn" class="ui compact button">clear</button>
+                    </div>
+
+                </div>
+
+                <div class="field">
+                    <button type="button" id="search-btn" class="ui mini teal basic button"><i class="search icon"></i>搜索
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="table-container">
+            <table class="ui compact teal table" th:fragment="resourceList">
+                <thead>
+                <tr align="center">
+                    <th>ID</th>
+                    <th>资源名称</th>
+                    <th>资源分类</th>
+                    <th>二级类别</th>
+                    <th>资源地址</th>
+                    <th>更新时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr align="center" th:each="resource,iterStat:${pageInfo.list}">
+                    <td th:text="${iterStat.count}">1</td>
+                    <td th:text="${resource.resourceName}">大圣，此去欲何?</td>
+                    <td th:text="${resource.category.name}">我的故事</td>
+                    <td th:text="${resource.type}">是</td>
+                    <td th:text="${resource.resourceAddress}">草稿</td>
+                    <td th:text="${#dates.format(resource.updateTime,'yyyy-MM-dd')}">2020-01-02 05:20</td>
+                    <td>
+                        <!--th:href="@{/admin/types/{id}/input(id=${type.id})}"-->
+                        <a href="#" class="ui mini teal basic button" th:href="@{/admin/resources/{id}/input(id=${resource.id})}">编辑</a>
+                        <a href="#" onclick="return confirm('确定要删除该资源吗？三思啊! 删了可就没了！')" th:attr="del_uri=@{/admin/resources/}+${resource.id}"
+                           class="ui mini red basic button deleteResourceBtn">删除</a>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="7">
+                        <div class="ui inverted divided stackable grid">
+                            <div class="three wide column" align="center">
+                                <a class="item" th:href="@{/admin/resources(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}" th:unless="${pageInfo.isFirstPage}">上一页</a>
+                            </div>
+
+                            <div class="ten wide column" align="center">
+                                <p>第 <span th:text="${pageInfo.pageNum}"></span> 页，共 <span th:text="${pageInfo.pages}"></span> 页，有 <span th:text="${pageInfo.total}"></span> 篇资源</p>
+                            </div>
+
+                            <div class="three wide column" align="center">
+                                <a class="item" th:href="@{/admin/resources(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}" th:unless="${pageInfo.isLastPage}">下一页</a>
+                            </div>
+                        </div>
+                        <div align="center">
+                            <a href="#" th:href="@{/admin/resources/input}">
+                                <button type="button" class="ui teal button m-mobile-wide m-margin-top"><i
+                                        class="pencil icon"></i>新增
+                                </button>
+                            </a>
+                        </div>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+
+            <form id="deleteResourceForm" method="post">
+                <input type="hidden" name="_method" value="delete"/>
+            </form>
+            <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+                <i class="close icon"></i>
+                <div class="" th:text="|提示： ${message}">提示：操作成功！</div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<br>
+<br>
+
+<!--底部栏-->
+<div th:replace="~{common/foot::footBar}"></div>
+
+<th:block th:replace="~{admin/common/scriptFragment::scriptBar}"></th:block>
+
+
+<script>
+
+
+
+
+    $('#clear-btn')
+        .on('click', function () {
+            $('.ui.type.dropdown')
+                .dropdown('clear');
+        });
+
+    function page(obj) {
+        $("[name='page']").val($(obj).data("page"));
+        loaddata();
+    }
+
+    $("#search-btn").click(function () {
+        $("[name='page']").val(0);
+        loaddata();
+    });
+
+    function loaddata() {
+        $("#table-container").load(/*[[@{/admin/resources/search}]]*/"/admin/resources/search", {
+            categoryId: $("[name='categoryId']").val(),
+            page: $("[name='page']").val()
+        });
+    }
+
+    $(".deleteResourceBtn").click(function(){
+        $("#deleteResourceForm").attr("action",$(this).attr("del_uri")).submit();
+        return false;
+    });
+</script>
+</body>
+</html>

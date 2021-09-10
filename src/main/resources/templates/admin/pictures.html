@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>相册管理</title>
+  <link href="../static/images/me.jpg" th:href="@{/images/myAvatar.jpg}" rel="icon" type="image/x-ico">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+<!--导航栏-->
+
+<div th:replace="~{admin/common/header::headerBar(mainActive='picture')}"></div>
+
+<div th:replace="~{admin/common/header::pictureBar(activeUrl='pictureList')}"></div>
+
+  <!--中间内容-->
+  <div  class="m-padded-tb-big">
+    <div class="ui container">
+      <!--消息提示-->
+      <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+        <i class="close icon"></i>
+        <div class="" th:text="|提示： ${message}">提示：恭喜，操作成功！</div>
+      </div>
+      <table class="ui compact teal table">
+        <thead>
+          <tr align="center">
+            <th>ID</th>
+            <th>图片名称</th>
+            <th>时间地点</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr align="center" th:each="picture,iterStat:${pageInfo.list}">
+            <td th:text="${iterStat.count}">1</td>
+            <td th:text="${picture.pictureName}">东西冲徒步</td>
+            <td th:text="${picture.pictureTime}">2019年12月31日 深圳</td>
+            <td>
+              <a href="#" class="ui mini teal basic button" th:href="@{/admin/pictures/{id}/input(id=${picture.id})}">编辑</a>
+              <a href="#" th:attr="del_uri=@{/admin/pictures/}+${picture.id}" onclick="return confirm('确定要删除该照片吗？三思啊! 删了可就没了！')" class="ui mini red basic button delPictureBtn">删除</a>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="6" >
+              <div class="ui inverted divided stackable grid">
+                <div class="three wide column" align="center">
+                  <a class="item" th:href="@{/admin/pictures(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}" th:unless="${pageInfo.isFirstPage}">上一页</a>
+                </div>
+
+                <div class="ten wide column" align="center">
+                  <p>第 <span th:text="${pageInfo.pageNum}"></span> 页，共 <span th:text="${pageInfo.pages}"></span> 页，有 <span th:text="${pageInfo.total}"></span> 个分类</p>
+                </div>
+
+                <div class="three wide column" align="center">
+                  <a class="item" th:href="@{/admin/pictures(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}" th:unless="${pageInfo.isLastPage}">下一页</a>
+                </div>
+              </div>
+
+              <div align="center">
+                <a href="#" th:href="@{/admin/pictures/input}">
+                  <button type="button" class="ui teal button m-mobile-wide m-margin-top"><i class="pencil icon"></i>新增</button>
+                </a>
+              </div>
+              <!--<a href="#" th:href="@{/admin/pictures/input}" class="ui mini right floated teal basic button">新增</a>-->
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+      <form id="deletePictureForm"  method="post" >
+        <input type="hidden" name="_method" value="delete" />
+      </form>
+    </div>
+  </div>
+
+  <br>
+  <br>
+  <!--底部栏-->
+<div th:replace="~{common/foot::footBar}"></div>
+
+
+<th:block th:replace="~{admin/common/scriptFragment::scriptBar}"></th:block>
+
+<script>
+    $(".delPictureBtn").click(function(){
+        $("#deletePictureForm").attr("action",$(this).attr("del_uri")).submit();
+        return false;
+    });
+</script>
+
+</body>
+</html>

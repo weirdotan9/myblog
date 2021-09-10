@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TWei-资源库</title>
+    <link href="../static/images/me.jpg" th:href="@{/images/myAvatar.jpg}" rel="icon" type="image/x-ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+<!--导航-->
+<div th:replace="~{common/head::navBar(n=6)}"></div>
+
+
+<!--顶部图片-->
+<div class="m-bg-type_outer" style="width: 100%;height: 40%">
+    <img src="../static/images/resourcebg.jpg" th:src="@{/images/resourcebg.jpg}" alt="" class="ui m-bg image"
+         style="width: 100%;height: 100%">
+    <div class="m-bg-class_cover">
+        <div align="center">
+            <div class="ui container" align="center" style="position: relative ;bottom: -540px;">
+                <div class="m-font-size-title " align="center" style="font-family:'STXingkai'">资源库</div>
+                <div class="m-font-size-text-init-title m-margin-top" align="center">你该明白了，万事藏于心而不表于情</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--中间内容-->
+<div class="m-margin- animated fadeIn">
+    <div class="ui m-opacity container">
+
+        <div class="ui segment m-opacity">
+            <div class="ui container" align="center">
+
+                <div class="ui labeled button m-margin-tb-tiny" th:each="category:${categories}">
+                    <a href="#studyresource" th:href="@{'#'+${category.name}}" class="ui basic teal button" th:text="${category.name}">学习资源</a>
+                    <div class="ui basic teal left pointing label" th:text="${#arrays.length(category.resources)}">64</div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--资源区域-->
+        <div class="box-shadow-max">
+            <div class="ui top attached teal m-opacity segment box-shadow-max">
+                <div class="ui m-padded-tb-large">
+                    <div class="ui stackable m-opacity grid" th:each="category:${categories}">
+
+                        <h2 id="studyresource" style="margin: 0 auto" class="ui header" th:id="${category.name}">
+                            <i class="book icon"></i>
+                            <div class="content">
+                                <span th:text="${category.name}">学习资源</span>
+                            </div>
+                        </h2>
+
+                        <div class="ui stackable four cards m-margin-top grid" style="width: 6000px" >
+                            <a href="https://www.bilibili.com/" th:href="@{${resource.resourceAddress}}" target="_blank" class="orange card" th:each="resource:${category.resources}">
+                                <div class="content">
+                                    <img class="left circular floated mini ui image"
+                                         src="http://images.newstar.net.cn/img/image-20201214160701358.png"
+                                         th:src="@{${resource.resourcePicture}}"
+                                         style="width: 45px;height: 45px;">
+                                    <div class="left" style="font-size: medium;font-weight: bold;color: #2C7EEA" th:text="${resource.resourceName}">B站
+                                    </div>
+                                    <div class="meta" style="" th:text="${resource.type}">视屏类</div>
+                                    <div class="description" th:text="${resource.resourceDescription}">众所周知，B站是一个学习网站</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <br>
+
+
+        <!--底部栏-->
+        <div th:replace="~{common/foot::footBar}"></div>
+
+
+        <th:block th:replace="~{common/script::scriptBar}"></th:block>
+
+        <script>
+            $('#nav').css("display", "block");
+        </script>
+
+</body>
+</html>

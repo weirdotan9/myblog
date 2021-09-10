@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.twr.dao.PictureDao">
+
+    <!--查询所有照片-->
+    <select id="getAllPicture" resultType="com.twr.entity.Picture">
+        select * from t_picture order by t_picture.id desc
+    </select>
+
+    <!--添加图片-->
+    <insert id="addPicture" parameterType="com.twr.entity.Picture">
+        insert into t_picture (picture_name,picture_time,picture_address,picture_description)
+        values (#{pictureName},#{pictureTime},#{pictureAddress},#{pictureDescription})
+    </insert>
+
+    <!--根据id查询照片-->
+    <select id="getPictureById" resultType="com.twr.entity.Picture">
+        select * from t_picture p where p.id = #{id}
+    </select>
+
+    <!--编辑修改相册-->
+    <update id="updatePicture" parameterType="com.twr.entity.Picture">
+        update t_picture
+        set picture_name = #{pictureName}, picture_time = #{pictureTime}, picture_address = #{pictureAddress}, picture_description = #{pictureDescription}
+        where id = #{id};
+    </update>
+
+    <!--删除照片-->
+    <delete id="removePicture" >
+        delete from t_picture where id = #{id}
+    </delete>
+
+</mapper>

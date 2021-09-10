@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.twr.dao.CategoryDao">
+
+    <resultMap id="categoryMap" type="com.twr.entity.Category">
+        <id property="id" column="cid"/>
+        <result property="name" column="name"/>
+        <collection property="resources" ofType="com.twr.queryvo.ResourceShowVO">
+            <id column="rid" property="id"/>
+            <result property="resourceName" column="resource_name"/>
+            <result property="resourceAddress" column="resource_address"/>
+            <result property="resourcePicture" column="resource_picture"/>
+            <result property="resourceDescription" column="resource_description"/>
+            <result property="type" column="type"/>
+            <result property="categoryId" column="category_id"/>
+        </collection>
+    </resultMap>
+
+    <select id="getAllCategory" resultType="category">
+        select * from t_category
+    </select>
+
+    <select id="getAllCategoryAndResources" resultMap="categoryMap">
+        select r.id rid,r.resource_name,r.category_id,r.resource_name,r.resource_address,r.resource_picture,
+               r.resource_description,r.type,
+               c.id cid ,c.name
+        from t_resource r,t_category c
+          where r.category_id=c.id;
+    </select>
+</mapper>

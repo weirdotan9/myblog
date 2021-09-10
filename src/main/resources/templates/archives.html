@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TWei-时间轴</title>
+  <link href="../static/images/me.jpg" th:href="@{/images/myAvatar.jpg}" rel="icon" type="image/x-ico">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+  <link rel="stylesheet" href="../static/css/timeline.css" th:href="@{/css/timeline.css}">
+</head>
+<body>
+
+  <!--导航-->
+  <div th:replace="~{common/head::navBar(n=3)}"></div>
+
+<!--时间轴内容-->
+  <div class="doc-container m-padded-tb-massivex m-opacity" id="doc-container">
+      <th:block >
+        <section class="timeline">
+          <ul>
+
+            <li class=""  th:each="blog:${blogs}">
+              <div>
+                <time th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2020/01/01</time>
+                <div class="scientist" >
+                    <a href="#" target="_blank" th:href="@{/blog/{id}(id=${blog.id})}">
+                      <h3 class="state" style="text-align:center;font-size: 16px;color: #000;" th:text="${blog.title}">文章标题</h3>
+                    </a>
+                </div>
+              </div>
+            </li>
+
+          </ul>
+        </section>
+      </th:block>
+  </div>
+
+
+
+  <!--底部栏-->
+
+  <div th:replace="~{common/foot::footBar}"></div>
+
+
+
+  <th:block th:replace="~{common/script::scriptBar}"></th:block>
+  <script src="../static/lib/timeline/timeline.js" th:src="@{/lib/timeline/timeline.js}"></script>
+<script>
+    $('#nav').css("display","block");
+</script>
+
+
+</body>
+</html>
