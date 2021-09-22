@@ -10,6 +10,7 @@ import com.twr.queryvo.*;
 import com.twr.service.BlogService;
 import com.twr.utils.MarkDownUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,6 +21,9 @@ public class BlogServiceImpl implements BlogService {
 
     @Autowired
     private BlogDao blogDao;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     public int saveBlog(Blog blog) {
@@ -96,14 +100,33 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public DetailedBlogVO getDetailedBlog(Long id) {
+
+        Object object = redisTemplate.opsForValue().get(String.valueOf(id));
+        if (object!=null){
+            DetailedBlogVO blogVO = (DetailedBlogVO) object;
+            String s = MarkDownUtils.markdownToHtmlExtensions(blogVO.getContent());
+            blogVO.setContent(s);
+            blogVO.setCommentCount(blogDao.getCommentCountById(id));
+            blogDao.updateViews(id);
+            blogVO.setViews(blogVO.getViews()+1);
+            redisTemplate.opsForValue().set(String.valueOf(id),blogVO);
+            System.out.println("查询缓存");
+            return blogVO;
+
+        }
+
         DetailedBlogVO detailedBlog = blogDao.getDetailedBlog(id);
         if (detailedBlog==null){
+            redisTemplate.opsForValue().set(String.valueOf(id),"");
              throw new NotFoundException("该博客已不存在");
+        }else{
+            redisTemplate.opsForValue().set(String.valueOf(id),detailedBlog);
         }
         String s = MarkDownUtils.markdownToHtmlExtensions(detailedBlog.getContent());
         detailedBlog.setContent(s);
         blogDao.updateViews(id);
-        blogDao.getCommentCountById(id);
+        detailedBlog.setCommentCount(blogDao.getCommentCountById(id));
+        System.out.println("查询数据库");
         return detailedBlog;
     }
 

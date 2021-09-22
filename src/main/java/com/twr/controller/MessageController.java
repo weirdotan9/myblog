@@ -21,8 +21,7 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
-    @Value("${comment.avatar}")
-    private String avatar;
+
 
     @GetMapping("/message")
     public String toMessagePage( ){
@@ -45,9 +44,8 @@ public class MessageController {
         if (user != null) {
             message.setAvatar(user.getAvatar());
             message.setAdminMessage(true);
-        } else {
-            message.setAvatar(avatar);
         }
+
         if (message.getParentMessage().getId() != null) {
             message.setParentMessageId(message.getParentMessage().getId());
         }

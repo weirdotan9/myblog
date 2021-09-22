@@ -182,8 +182,14 @@
         <div class="fields">
           <div class="field m-mobile-wide m-margin-bottom-small">
             <div class="ui left icon input">
+              <i class="qq icon"></i>
+              <input type="text" name="qqnumber" placeholder="输入QQ号，获取个人信息" th:value="${session.user}!=null ? ${session.user.email}">
+            </div>
+          </div>
+          <div class="field m-mobile-wide m-margin-bottom-small">
+            <div class="ui left icon input">
               <i class="user icon"></i>
-              <input type="text" name="nickname" placeholder="姓名" th:value="${session.user}!=null ? ${session.user.nickname}">
+              <input type="text" name="nickname" placeholder="昵称" th:value="${session.user}!=null ? ${session.user.nickname}">
             </div>
           </div>
           <div class="field m-mobile-wide m-margin-bottom-small">
@@ -192,6 +198,7 @@
               <input type="text" name="email" placeholder="邮箱" th:value="${session.user}!=null ? ${session.user.email}">
             </div>
           </div>
+
           <div class="field  m-margin-bottom-small m-mobile-wide">
             <button id="commentPost-btn" type="button" class="ui teal button m-mobile-wide"><i class="edit icon"></i>发布</button>
           </div>
@@ -311,6 +318,15 @@
                 }
                 ]
             },
+            type: {
+                identifier: 'qqnumber',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入qq号内容'
+                }]
+            }
+
+            /*,
             content: {
                 identifier: 'nickname',
                 rules: [{
@@ -324,7 +340,7 @@
                     type: 'email',
                     prompt: '请填写正确的邮箱地址'
                 }]
-            }
+            }*/
         }
     });
 
@@ -338,19 +354,27 @@
         var boo = $('.ui.form').form('validate form');
         if (boo) {
             console.log('校验成功');
-            postData();
+            $.get("https://api.usuuu.com/qq/"+$("[name='qqnumber']").val(),function (data) {
+                console.log(data.data.name);
+                $("[name='nickname']").val(data.data.name);
+                $("[name='email']").val(data.data.qq+'@qq.com');
+                postData(data);
+            });
+
         } else {
+
             console.log('校验失败');
         }
     });
 
-    function postData() {
+    function postData(data) {
         $("#comment-container").load(/*[[@{/comments}]]*/"",{
             "parentComment.id" : $("[name='parentComment.id']").val(),
             "blogId" : $("[name='blogId']").val(),
             "nickname": $("[name='nickname']").val(),
             "email"   : $("[name='email']").val(),
-            "content" : $("[name='content']").val()
+            "content" : $("[name='content']").val(),
+            "avatar" : data.data.avatar
         },function (responseTxt, statusTxt, xhr) {
             $(window).scrollTo($('#goto'),500);
             clearContent();

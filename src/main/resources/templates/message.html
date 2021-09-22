@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TWei-留言板</title>
-  <link href="../static/images/me.jpg" th:href="@{/images/myAvatar.jpg}" rel="icon" type="image/x-ico">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
-  <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TWei-留言板</title>
+    <link href="../static/images/me.jpg" th:href="@{/images/myAvatar.jpg}" rel="icon" type="image/x-ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
 </head>
 <body>
 
@@ -16,14 +16,16 @@
 
 <!--顶部图片-->
 <div class="m-bg-type_outer" style="width: 100%;height: 40%">
-  <img src="../static/images/messagebg.jpg" th:src="@{/images/messagebg.jpg}" alt="" class="ui m-bg image" style="width: 100%;height: 100%">
-  <div class="m-bg-class_cover">
-    <div class="ui container" style="position: relative ;bottom: -540px;">
-      <div class="m-font-size-title m-right-bottom" align="center" style="font-family:'STXingkai'">留言板</div>
-      <div class="m-font-size-text-init-title m-margin-top" align="center">虽然只是短暂的擦身，相遇与分别，尽管如此，我却仍然想珍惜这所有的一切</div>
+    <img src="../static/images/messagebg.jpg" th:src="@{/images/messagebg.jpg}" alt="" class="ui m-bg image"
+         style="width: 100%;height: 100%">
+    <div class="m-bg-class_cover">
+        <div class="ui container" style="position: relative ;bottom: -540px;">
+            <div class="m-font-size-title m-right-bottom" align="center" style="font-family:'STXingkai'">留言板</div>
+            <div class="m-font-size-text-init-title m-margin-top" align="center">虽然只是短暂的擦身，相遇与分别，尽管如此，我却仍然想珍惜这所有的一切
+            </div>
 
+        </div>
     </div>
-  </div>
 </div>
 
 
@@ -38,33 +40,45 @@
                 <textarea name="content" placeholder="请输入留言信息..."></textarea>
             </div>
             <div class="ui grid">
-                <!--                    输入姓名-->
-                <div class="five wide column">
+                <div class="fields">
+
+                    <div class="field m-mobile-wide m-margin-bottom-small">
+                        <div class="ui left icon input">
+                            <i class="qq icon"></i>
+                            <input type="text" name="qqnumber" placeholder="输入qq自动获取信息" />
+                        </div>
+                    </div>
+
+                    <!--                    输入姓名-->
                     <div class="field m-mobile-wide m-margin-bottom-small">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
-                            <input type="text" name="nickname" placeholder="昵称" th:value="${session.user}!=null ? ${session.user.nickname}">
+                            <input type="text" name="nickname" placeholder="昵称"
+                                   th:value="${session.user}!=null ? ${session.user.nickname}">
                         </div>
                     </div>
-                </div>
 
-                <!--                        输入邮箱-->
-                <div class="five wide column">
+
+                    <!--                        输入邮箱-->
+
                     <div class="field m-mobile-wide m-margin-bottom-small">
                         <div class="ui left icon input">
                             <i class="mail icon"></i>
-                            <input type="text" name="email" placeholder="Email" th:value="${session.user}!=null ? ${session.user.email}">
+                            <input type="text" name="email" placeholder="Email"
+                                   th:value="${session.user}!=null ? ${session.user.email}">
                         </div>
                     </div>
-                </div>
 
-                <div class="right aligned six wide column">
                     <div class="field m-mobile-wide m-margin-bottom-small">
-                        <button id="messagepost-btn" type="button" class="ui teal button m-mobile-wide"><i class="edit icon"></i>发布</button>
+                        <button id="messagepost-btn" type="button" class="ui teal button m-mobile-wide"><i
+                                class="edit icon"></i>发布
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
+
+
         <!--留言区-->
         <div class="ui bottom attached m-margin-top">
             <div id="message-container" class="ui teal segment">
@@ -78,15 +92,21 @@
                             <div class="content">
                                 <a class="author">
                                     <span th:text="${message.nickname}">Matt</span>
-                                    <div class="ui mini basic teal left pointing label m-padded-mini" th:if="${message.adminMessage}">栈主</div>
+                                    <div class="ui mini basic teal left pointing label m-padded-mini"
+                                         th:if="${message.adminMessage}">栈主
+                                    </div>
                                 </a>
                                 <div class="metadata">
-                                    <span class="date" th:text="${#dates.format(message.createTime,'yyyy-MM-dd HH:mm')}">今天下午 5:42</span>
+                                    <span class="date"
+                                          th:text="${#dates.format(message.createTime,'yyyy-MM-dd HH:mm')}">今天下午 5:42</span>
                                 </div>
-                                <div class="text" th:text="${message.content}">太赞了！ </div>
+                                <div class="text" th:text="${message.content}">太赞了！</div>
                                 <div class="actions">
-                                    <a class="reply" data-messageid="1" data-messagenickname="Matt" th:attr="data-messageid=${message.id},data-messagenickname=${message.nickname}" onclick="reply(this)">回复</a>
-                                    <a class="delete" href="#" th:href="@{/messages/{id}/delete(id=${message.id})}" onclick="return confirm('确定要删除该评论吗？三思啊! 删了可就没了！')" th:if="${session.user}">删除</a>
+                                    <a class="reply" data-messageid="1" data-messagenickname="Matt"
+                                       th:attr="data-messageid=${message.id},data-messagenickname=${message.nickname}"
+                                       onclick="reply(this)">回复</a>
+                                    <a class="delete" href="#" th:href="@{/messages/{id}/delete(id=${message.id})}"
+                                       onclick="return confirm('确定要删除该评论吗？三思啊! 删了可就没了！')" th:if="${session.user}">删除</a>
                                 </div>
                             </div>
                             <!--子集留言-->
@@ -98,16 +118,24 @@
                                     <div class="content">
                                         <a class="author">
                                             <span th:text="${reply.nickname}">小红</span>
-                                            <div class="ui mini basic teal left pointing label m-padded-mini" th:if="${reply.adminMessage}">栈主</div>
+                                            <div class="ui mini basic teal left pointing label m-padded-mini"
+                                                 th:if="${reply.adminMessage}">栈主
+                                            </div>
                                             &nbsp;<span th:text="|@ ${reply.parentNickname}|" class="m-teal">@ 小白</span>
                                         </a>
                                         <div class="metadata">
-                                            <span class="date" th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm')}">今天下午 5:42</span>
+                                            <span class="date"
+                                                  th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm')}">今天下午 5:42</span>
                                         </div>
-                                        <div class="text" th:text="${reply.content}">太赞了！ </div>
+                                        <div class="text" th:text="${reply.content}">太赞了！</div>
                                         <div class="actions">
-                                            <a class="reply" data-messageid="1" data-messagenickname="Matt" th:attr="data-messageid=${reply.id},data-messagenickname=${reply.nickname}" onclick="reply(this)">回复</a>
-                                            <a class="delete" href="#" th:href="@{/messages/{id}/delete(id=${reply.id})}" onclick="return confirm('确定要删除该评论吗？三思啊! 删了可就没了！')" th:if="${session.user}">删除</a>
+                                            <a class="reply" data-messageid="1" data-messagenickname="Matt"
+                                               th:attr="data-messageid=${reply.id},data-messagenickname=${reply.nickname}"
+                                               onclick="reply(this)">回复</a>
+                                            <a class="delete" href="#"
+                                               th:href="@{/messages/{id}/delete(id=${reply.id})}"
+                                               onclick="return confirm('确定要删除该评论吗？三思啊! 删了可就没了！')"
+                                               th:if="${session.user}">删除</a>
                                         </div>
                                     </div>
                                 </div>
@@ -137,9 +165,7 @@
 <!--底部栏-->
 
 
-
 <div th:replace="~{common/foot::footBar}"></div>
-
 
 
 <th:block th:replace="~{common/script::scriptBar}"></th:block>
@@ -147,11 +173,11 @@
 
 <script>
 
-    $('#nav').css("display","block");
+    $('#nav').css("display", "block");
 
 
     $('.wechat').popup({
-        popup : $('.wechat-qr'),
+        popup: $('.wechat-qr'),
         position: 'bottom center'
     });
     $('.qq').popup();
@@ -168,52 +194,52 @@
                 }
                 ]
             },
-            content: {
-                identifier: 'nickname',
+            type: {
+                identifier: 'qqnumber',
                 rules: [{
                     type: 'empty',
-                    prompt: '请输入你的大名'
-                }]
-            },
-            type: {
-                identifier: 'email',
-                rules: [{
-                    type: 'email',
-                    prompt: '请填写正确的邮箱地址'
+                    prompt: '请输入qq号'
                 }]
             }
         }
     });
 
     // 初始化加载
-     $(function () {
-         $("#message-container").load(/*[[@{/messagecomment}]]*/"messagecomment");
-     });
+    $(function () {
+        $("#message-container").load(/*[[@{/messagecomment}]]*/"messagecomment");
+    });
 
     // 校验信息
     $('#messagepost-btn').click(function () {
         var boo = $('.ui.form').form('validate form');
         if (boo) {
             console.log('校验成功');
-            postData();
+
+            $.get("https://api.usuuu.com/qq/"+$("[name='qqnumber']").val(),function (data) {
+                console.log(data.data.name);
+                $("[name='nickname']").val(data.data.name);
+                $("[name='email']").val(data.data.qq+'@qq.com');
+                postData(data);
+            });
         } else {
             console.log('校验失败');
         }
     });
 
     //发送请求给后端
-     function postData() {
-         $("#message-container").load(/*[[@{/messages}]]*/"",{
-             "parentMessage.id" : $("[name='parentMessage.id']").val(),
-             // "blog.id" : $("[name='blog.id']").val(),
-             "nickname": $("[name='nickname']").val(),
-             "email"   : $("[name='email']").val(),
-             "content" : $("[name='content']").val()
-         },function (responseTxt, statusTxt, xhr) {
- //        $(window).scrollTo($('#message-container'),500);
-             clearContent();
-         });
-     }
+    function postData(data) {
+        $("#message-container").load(/*[[@{/messages}]]*/"", {
+            "parentMessage.id": $("[name='parentMessage.id']").val(),
+            // "blog.id" : $("[name='blog.id']").val(),
+            "nickname": $("[name='nickname']").val(),
+            "email": $("[name='email']").val(),
+            "content": $("[name='content']").val(),
+            "avatar" : data.data.avatar
+        }, function (responseTxt, statusTxt, xhr) {
+            //        $(window).scrollTo($('#message-container'),500);
+            clearContent();
+        });
+    }
 
     // 清除表单
     function clearContent() {
@@ -224,13 +250,13 @@
         $("[name='content']").attr("placeholder", "请输入评论信息...");
     }
 
-     function reply(obj) {
-         var messageId = $(obj).data('messageid');
-         var messageNickname = $(obj).data('messagenickname');
-         $("[name='content']").attr("placeholder", "@"+messageNickname).focus();
-         $("[name='parentMessage.id']").val(messageId);
-         $(window).scrollTo(0,500);
-     }
+    function reply(obj) {
+        var messageId = $(obj).data('messageid');
+        var messageNickname = $(obj).data('messagenickname');
+        $("[name='content']").attr("placeholder", "@" + messageNickname).focus();
+        $("[name='parentMessage.id']").val(messageId);
+        $(window).scrollTo(0, 500);
+    }
 
 </script>
 </body>

@@ -26,8 +26,6 @@ public class CommentController {
     @Autowired
     private BlogService blogService;
 
-    @Value("${comment.avatar}")
-    private String avatar;
 
 
     @GetMapping("/comment/{blogId}")
@@ -45,8 +43,6 @@ public class CommentController {
         if (user != null) {
             comment.setAdminComment(true);
             comment.setAvatar(user.getAvatar());
-        } else {
-            comment.setAvatar(avatar);
         }
 
         if (comment.getParentComment().getId() != null) {
