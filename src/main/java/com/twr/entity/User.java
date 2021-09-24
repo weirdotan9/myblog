@@ -16,5 +16,6 @@ public class User {
     private Integer type;
     private Date createTime;
     private Date updateTime;
+    private String qqNumber;
 
 }

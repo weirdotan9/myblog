@@ -4,7 +4,7 @@
 
     <!--查询用户名和密码-->
     <select id="getUserByUserNameAndPassword" resultType="user">
-        select * from myblog.t_user
+        select * from t_user
         where username = #{username} and password = #{password};
     </select>
 

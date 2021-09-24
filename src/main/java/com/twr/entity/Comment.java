@@ -13,6 +13,7 @@ public class Comment {
     private Long id;
     private String nickname;
     private String email;
+    private String qqNumber;
     private String content;
 
     //头像

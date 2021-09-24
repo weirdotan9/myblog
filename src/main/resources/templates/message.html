@@ -45,7 +45,7 @@
                     <div class="field m-mobile-wide m-margin-bottom-small">
                         <div class="ui left icon input">
                             <i class="qq icon"></i>
-                            <input type="text" name="qqnumber" placeholder="输入qq自动获取信息" />
+                            <input type="text" name="qqnumber" placeholder="输入qq自动获取信息" th:value="${session.user}!=null ? ${session.user.qqNumber}"/>
                         </div>
                     </div>
 
@@ -60,11 +60,10 @@
 
 
                     <!--                        输入邮箱-->
-
                     <div class="field m-mobile-wide m-margin-bottom-small">
                         <div class="ui left icon input">
-                            <i class="mail icon"></i>
-                            <input type="text" name="email" placeholder="Email"
+                           <!-- <i class="mail icon"></i>-->
+                            <input type="hidden" name="email" placeholder="Email"
                                    th:value="${session.user}!=null ? ${session.user.email}">
                         </div>
                     </div>
@@ -230,8 +229,8 @@
     function postData(data) {
         $("#message-container").load(/*[[@{/messages}]]*/"", {
             "parentMessage.id": $("[name='parentMessage.id']").val(),
-            // "blog.id" : $("[name='blog.id']").val(),
             "nickname": $("[name='nickname']").val(),
+            "qqNumber": $("[name='qqnumber']").val(),
             "email": $("[name='email']").val(),
             "content": $("[name='content']").val(),
             "avatar" : data.data.avatar

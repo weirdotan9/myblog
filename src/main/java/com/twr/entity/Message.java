@@ -11,6 +11,7 @@ public class Message {
 
     private Long id;
     private String nickname;
+    private String qqNumber;
     private String email;
     private String content;
     private String avatar;

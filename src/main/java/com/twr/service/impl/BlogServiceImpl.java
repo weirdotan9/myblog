@@ -58,6 +58,8 @@ public class BlogServiceImpl implements BlogService {
     public int updateBlog(ShowBlogVO showBlogVO) {
         showBlogVO.setUpdateTime(new Date());
         int i = blogDao.updateBlog(showBlogVO);
+        DetailedBlogVO blog = blogDao.getDetailedBlog(showBlogVO.getId());
+        redisTemplate.opsForValue().set(String.valueOf(blog.getId()),blog);
         return i;
     }
 
